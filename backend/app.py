@@ -1,6 +1,6 @@
 
 
-from flask import Flask, jsonify, request
+from flask import Flask, jsonify, request, send_from_directory
 from flask_cors import CORS
 from langchain.chat_models import init_chat_model
 from langchain.agents import create_agent
@@ -11,7 +11,7 @@ import requests
 import json
 import base64, tempfile
 import assemblyai as aai
-from groq import Groq
+from pathlib import Path
 
 load_dotenv()
 
@@ -21,7 +21,15 @@ ASSEMBLYAI_API_KEY  = os.getenv("ASSEMBLYAI_API_KEY")
 #GROQ_API_KEY = os.getenv("GROQ_API_KEY")
 aai.settings.api_key = ASSEMBLYAI_API_KEY
 
-app = Flask(__name__)
+BASE_DIR = Path(__file__).resolve().parent.parent
+FRONTEND_DIR = BASE_DIR / "frontend"
+
+
+app = Flask(
+    __name__,
+    static_folder=str(FRONTEND_DIR),
+    static_url_path=""
+)
 CORS(app, expose_headers=['X-Question-Number'])
 
 model = init_chat_model(
@@ -72,7 +80,9 @@ FEEDBACK_PROMPT = """Based on our complete interview conversation, provide detai
         }}
         Be specific - reference ACTUAL things they said during the interview."""
 
-
+@app.route("/")
+def home():
+    return send_from_directory(FRONTEND_DIR, "index.html")
 
 
 def stream_audio(text):
