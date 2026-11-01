@@ -22,8 +22,7 @@ ASSEMBLYAI_API_KEY  = os.getenv("ASSEMBLYAI_API_KEY")
 aai.settings.api_key = ASSEMBLYAI_API_KEY
 
 app = Flask(__name__)
-CORS(app)
-
+CORS(app, expose_headers=['X-Question-Number'])
 
 model = init_chat_model(
     "google_genai:gemini-3.5-flash-lite",
@@ -74,8 +73,7 @@ FEEDBACK_PROMPT = """Based on our complete interview conversation, provide detai
         Be specific - reference ACTUAL things they said during the interview."""
 
 
-app = Flask(__name__)
-CORS(app, expose_headers=['X-Question-Number'])
+
 
 def stream_audio(text):
     BASE_URL = "https://global.api.murf.ai/v1/speech/stream"
@@ -207,4 +205,5 @@ def get_feedback():
     return jsonify({"success": True, "feedback": feedback})
 
 
-app.run(debug=True, port=5000)
+if __name__ == "__main__":
+    app.run(host="0.0.0.0", port=5000, debug=True)
