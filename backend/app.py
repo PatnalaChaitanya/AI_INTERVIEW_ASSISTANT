@@ -84,6 +84,16 @@ FEEDBACK_PROMPT = """Based on our complete interview conversation, provide detai
 def home():
     return send_from_directory(FRONTEND_DIR, "index.html")
 
+@app.route("/debug-routes", methods=["GET"])
+def debug_routes():
+    return jsonify([
+        {
+            "route": str(rule),
+            "methods": list(rule.methods)
+        }
+        for rule in app.url_map.iter_rules()
+    ])
+
 
 def stream_audio(text):
     BASE_URL = "https://global.api.murf.ai/v1/speech/stream"
