@@ -293,7 +293,7 @@ function stopRecording() {
 
 // ========== API FUNCTIONS ==========
 
-const startInterviewApiUrl = "http://127.0.0.1:5000/start-interview";
+const startInterviewApiUrl = "/start-interview";
 
 
 async function startInterview() {
@@ -328,7 +328,7 @@ async function startInterview() {
     }
 }
 
-const submitAnswerApiUrl = "http://127.0.0.1:5000/submit-answer";
+const submitAnswerApiUrl = "/submit-answer";
 
 
 async function submitAnswer() {
@@ -401,7 +401,7 @@ async function endInterview() {
     await getFeedback();
 }
 
-const getFeedbackApiUrl = "http://127.0.0.1:5000/get-feedback";
+const getFeedbackApiUrl = "/get-feedback";
 
 async function getFeedback() {
     showFeedbackSection();
